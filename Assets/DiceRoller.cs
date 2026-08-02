@@ -9,7 +9,7 @@ public class DiceRoller : MonoBehaviour
     public TMP_Text resultText; // UI Text element to show result
 
     [Header("Roll Parameters")]
-    public float throwForce = 8f;
+    public float throwForce = 15f;
     public float maxTorque = 500f;
 
     private bool isRolling = false;
