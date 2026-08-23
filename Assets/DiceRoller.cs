@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -8,8 +9,10 @@ public class DiceRoller : MonoBehaviour
     public Rigidbody rb;
     public TMP_Text resultText;
 
-    // 1. ADD THIS: Reference to your player controller script
-    public PlayerController playerScript;
+    [Header("Turn Management")]
+    // List of all players participating in the game
+    public List<PlayerController> players = new List<PlayerController>();
+    private int currentPlayerIndex = 0;
 
     [Header("Speed Tweaks")]
     public float throwForce = 5f;
@@ -27,7 +30,7 @@ public class DiceRoller : MonoBehaviour
 
     public void RollDice()
     {
-        if (isRolling) return;
+        if (isRolling || players.Count == 0) return;
 
         transform.position = new Vector3(0, 3f, 0);
         transform.rotation = Random.rotation;
@@ -65,13 +68,17 @@ public class DiceRoller : MonoBehaviour
         }
 
         int rolledNumber = GetTopFaceNumber();
-        if (resultText != null) resultText.text = "Rolled: " + rolledNumber;
+        if (resultText != null)
+            resultText.text = $"P{currentPlayerIndex + 1} Rolled: {rolledNumber}";
 
-        // 2. ADD THIS: Tell the player to move the calculated rolled number!
-        if (playerScript != null)
+        // Move the active player
+        if (players[currentPlayerIndex] != null)
         {
-            playerScript.MoveSteps(rolledNumber);
+            players[currentPlayerIndex].MoveSteps(rolledNumber);
         }
+
+        // Pass turn to the next player
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
 
         isRolling = false;
     }
@@ -80,11 +87,11 @@ public class DiceRoller : MonoBehaviour
     {
         (Vector3 direction, int value)[] faces = new (Vector3, int)[]
         {
-            (transform.up, 2),        // Top face (+Y)
-            (-transform.up, 5),       // Bottom face (-Y)
-            (transform.right, 4),     // Right face (+X)
-            (-transform.right, 3),    // Left face (-X)
-            (transform.forward, 1),   // Front face (+Z)
+            (transform.up, 2),
+            (-transform.up, 5),
+            (transform.right, 4),
+            (-transform.right, 3),
+            (transform.forward, 1),
             (-transform.forward, 6)
         };
 
