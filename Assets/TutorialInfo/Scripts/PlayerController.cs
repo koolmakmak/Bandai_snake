@@ -53,6 +53,9 @@ public class PlayerController : MonoBehaviour
         }
 
         CheckTeleport();
+
+        CheckIfFinish();
+
         isMoving = false;
     }
 
@@ -72,5 +75,10 @@ public class PlayerController : MonoBehaviour
                 break;
             }
         }
+    }
+
+    private void CheckIfFinish()
+    {
+        int lastblock = 
     }
 }
