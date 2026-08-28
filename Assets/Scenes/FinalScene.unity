@@ -24487,9 +24487,9 @@ MonoBehaviour:
   rb: {fileID: 1032137162}
   resultText: {fileID: 0}
   drop_point: {fileID: 535362297}
-  throwForce: 50
+  throwForce: 1000
   maxTorque: 1000
-  dropForce: 30
+  dropForce: 1000
   maxSpinSpeed: 100
 --- !u!54 &1032137162
 Rigidbody:
@@ -30936,7 +30936,7 @@ MonoBehaviour:
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
   TargetOffset: {x: 0, y: 0, z: 0}
-  Damping: {x: 0.5, y: 0.5}
+  Damping: {x: 1.5, y: 1.5}
   Lookahead:
     Enabled: 0
     Time: 0
@@ -31386,7 +31386,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60.000004
+  field of view: 96.9
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -31412,8 +31412,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1388537707}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0063930573, y: 0.7452071, z: 0.007149762, w: 0.6667642}
-  m_LocalPosition: {x: -33.517662, y: 23.628048, z: -40.138206}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 41.84382, z: 10.63008}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
