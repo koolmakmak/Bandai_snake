@@ -12,6 +12,7 @@ public class TurnManager : MonoBehaviour
     public CinemachineCamera vcamDefault;
     public CinemachineCamera vcamZoom;
     public CinemachineCamera vcamDice;
+    public CinemachineCamera vcamBoard; // optional: static camera framing the whole board
     public Transform diceTarget;
 
     [Header("Game References")]
@@ -25,10 +26,17 @@ public class TurnManager : MonoBehaviour
     public int defaultPriority = 10;
     public int zoomPriority = 20;
     public int dicePriority = 30;
+    public int boardPriority = 40;
+
+    private enum CameraView { Default, Zoom, Dice }
 
     private TurnState state = TurnState.Idle;
     private int currentPlayerIndex = 0;
     private CinemachineBrain brain;
+
+    private CameraView currentView = CameraView.Default;
+    private bool boardViewActive = false;
+    private CameraView viewBeforeBoard = CameraView.Default;
 
     private void Start()
     {
@@ -82,6 +90,7 @@ public class TurnManager : MonoBehaviour
     {
         if (state != TurnState.Idle) return;
 
+        boardViewActive = false;
         state = TurnState.Rolling;
         SetRollButtonInteractable(false);
         ShowDice();
@@ -156,6 +165,7 @@ public class TurnManager : MonoBehaviour
                 PointPlayerCamerasAt(players[currentPlayerIndex].transform);
         }
 
+        boardViewActive = false;
         ShowDefault();
         SetRollButtonInteractable(true);
         state = TurnState.Idle;
@@ -177,23 +187,65 @@ public class TurnManager : MonoBehaviour
 
     private void ShowDefault()
     {
+        currentView = CameraView.Default;
         SetCameraPriority(vcamDefault, defaultPriority);
         SetCameraPriority(vcamZoom, 0);
         SetCameraPriority(vcamDice, 0);
+        SetCameraPriority(vcamBoard, 0);
     }
 
     private void ShowZoom()
     {
+        currentView = CameraView.Zoom;
         SetCameraPriority(vcamDefault, 0);
         SetCameraPriority(vcamZoom, zoomPriority);
         SetCameraPriority(vcamDice, 0);
+        SetCameraPriority(vcamBoard, 0);
     }
 
     private void ShowDice()
     {
+        currentView = CameraView.Dice;
         SetCameraPriority(vcamDefault, 0);
         SetCameraPriority(vcamZoom, 0);
         SetCameraPriority(vcamDice, dicePriority);
+        SetCameraPriority(vcamBoard, 0);
+    }
+
+    /// <summary>Wire this to the Board button's onClick event.</summary>
+    public void OnBoardButtonClicked()
+    {
+        if (boardViewActive)
+        {
+            boardViewActive = false;
+            RestoreView(viewBeforeBoard);
+        }
+        else
+        {
+            viewBeforeBoard = currentView;
+            boardViewActive = true;
+            ShowBoard();
+        }
+    }
+
+    private void ShowBoard()
+    {
+        CinemachineCamera board = vcamBoard != null ? vcamBoard : vcamDefault;
+        SetCameraPriority(vcamDefault, 0);
+        SetCameraPriority(vcamZoom, 0);
+        SetCameraPriority(vcamDice, 0);
+        SetCameraPriority(vcamBoard, 0);
+        SetCameraPriority(board, boardPriority);
+    }
+
+    private void RestoreView(CameraView view)
+    {
+        switch (view)
+        {
+            case CameraView.Zoom: ShowZoom(); break;
+            case CameraView.Dice: ShowDice(); break;
+            default: ShowDefault(); break;
+        }
     }
 
     private void SetCameraPriority(CinemachineCamera cam, int priority)

@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         anim = GetComponentInChildren<Animator>(); // 2. Get Animator component
+        if (anim != null) anim.applyRootMotion = false; // script moves the pawn, not the animation
 
         // ย้ายตัวละครไปช่องแรก + เพิ่ม Offset
         if (boardManager != null && boardManager.waypoints != null && boardManager.waypoints.Length > 0)
@@ -45,7 +46,7 @@ public class PlayerController : MonoBehaviour
         isMoving = true;
 
         // 3. Start walking animation
-        if (anim != null) anim.SetBool("isWalking", true);
+        if (anim != null) anim.SetBool("isMoving", true);
 
         for (int i = 0; i < steps; i++)
         {
@@ -83,7 +84,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // 5. Stop walking animation (กลับไป Idle)
-        if (anim != null) anim.SetBool("isWalking", false);
+        if (anim != null) anim.SetBool("isMoving", false);
 
         CheckTeleport();
         isMoving = false;
