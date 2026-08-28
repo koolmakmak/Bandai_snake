@@ -8,6 +8,9 @@ public class DiceRoller : MonoBehaviour
     [Header("References")]
     public Rigidbody rb;
     public TMP_Text resultText;
+    public GameObject drop_point;
+    public GameObject cameraOne;
+    public GameObject cameraTwo;
 
     [Header("Turn Management")]
     // List of all players participating in the game
@@ -26,13 +29,15 @@ public class DiceRoller : MonoBehaviour
     {
         if (rb == null) rb = GetComponent<Rigidbody>();
         rb.maxAngularVelocity = maxSpinSpeed;
+        cameraOne.SetActive(true);
+        cameraTwo.SetActive(false);
     }
 
     public void RollDice()
     {
         if (isRolling || players.Count == 0) return;
-
-        transform.position = new Vector3(0, 3f, 0);
+        Vector3 worldPosition = drop_point.transform.position;
+        transform.position = worldPosition;
         transform.rotation = Random.rotation;
 
         rb.linearVelocity = Vector3.zero;
@@ -58,6 +63,8 @@ public class DiceRoller : MonoBehaviour
     private IEnumerator CheckResultWhenStopped()
     {
         isRolling = true;
+        cameraOne.SetActive(!cameraOne.activeSelf);
+        cameraTwo.SetActive(!cameraTwo.activeSelf);
         if (resultText != null) resultText.text = "Rolling...";
 
         yield return new WaitForSeconds(0.2f);
@@ -79,7 +86,9 @@ public class DiceRoller : MonoBehaviour
 
         // Pass turn to the next player
         currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
-
+        yield return new WaitForSeconds(1f);
+        cameraOne.SetActive(!cameraOne.activeSelf);
+        cameraTwo.SetActive(!cameraTwo.activeSelf);
         isRolling = false;
     }
 
