@@ -27984,8 +27984,9 @@ MonoBehaviour:
   - {fileID: 878621681}
   - {fileID: 1131211191}
   rollButton: {fileID: 938064605}
-  diceResultDelay: 1.5
-  landingDelay: 1.5
+  diceResultDelay: 0.75
+  landingDelay: 1
+  postCameraDelay: 1
   defaultPriority: 10
   zoomPriority: 20
   dicePriority: 30

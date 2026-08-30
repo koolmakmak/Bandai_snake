@@ -23,6 +23,7 @@ public class TurnManager : MonoBehaviour
     [Header("Settings")]
     public float diceResultDelay = 2f;
     public float landingDelay = 1.2f;
+    public float postCameraDelay = 0.5f;
     public int defaultPriority = 10;
     public int zoomPriority = 20;
     public int dicePriority = 30;
@@ -123,6 +124,9 @@ public class TurnManager : MonoBehaviour
                 yield return null;
             }
         }
+
+        // Extra pause after the camera is on the player, before movement starts.
+        yield return new WaitForSeconds(postCameraDelay);
 
         PlayerController player = players[currentPlayerIndex];
         if (player == null)
