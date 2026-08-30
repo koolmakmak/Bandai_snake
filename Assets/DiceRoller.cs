@@ -9,6 +9,8 @@ public class DiceRoller : MonoBehaviour
     public Rigidbody rb;
     public TMP_Text resultText;
     public GameObject drop_point;
+    public Camera mainCamera;
+    public Camera povCamera;
 
     public event System.Action OnRollStart;
     public event System.Action<int> OnDiceLanded;
@@ -25,6 +27,9 @@ public class DiceRoller : MonoBehaviour
     {
         if (rb == null) rb = GetComponent<Rigidbody>();
         rb.maxAngularVelocity = maxSpinSpeed;
+        mainCamera.enabled = true;
+        povCamera.enabled = false;
+
     }
 
     public void RollDice()
@@ -59,7 +64,8 @@ public class DiceRoller : MonoBehaviour
     {
         isRolling = true;
         if (resultText != null) resultText.text = "Rolling...";
-
+        mainCamera.enabled = !mainCamera.enabled;
+        povCamera.enabled = !povCamera.enabled;
         yield return new WaitForSeconds(0.2f);
 
         while (rb.linearVelocity.sqrMagnitude > 0.001f || rb.angularVelocity.sqrMagnitude > 0.001f)
@@ -73,6 +79,8 @@ public class DiceRoller : MonoBehaviour
 
         OnDiceLanded?.Invoke(rolledNumber);
         isRolling = false;
+        mainCamera.enabled = !mainCamera.enabled;
+        povCamera.enabled = !povCamera.enabled;
     }
 
     private int GetTopFaceNumber()
