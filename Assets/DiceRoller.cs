@@ -9,13 +9,9 @@ public class DiceRoller : MonoBehaviour
     public Rigidbody rb;
     public TMP_Text resultText;
     public GameObject drop_point;
-    public GameObject cameraOne;
-    public GameObject cameraTwo;
 
-    [Header("Turn Management")]
-    // List of all players participating in the game
-    public List<PlayerController> players = new List<PlayerController>();
-    private int currentPlayerIndex = 0;
+    public event System.Action OnRollStart;
+    public event System.Action<int> OnDiceLanded;
 
     [Header("Speed Tweaks")]
     public float throwForce = 5f;
@@ -29,13 +25,12 @@ public class DiceRoller : MonoBehaviour
     {
         if (rb == null) rb = GetComponent<Rigidbody>();
         rb.maxAngularVelocity = maxSpinSpeed;
-        cameraOne.SetActive(true);
-        cameraTwo.SetActive(false);
     }
 
     public void RollDice()
     {
-        if (isRolling || players.Count == 0) return;
+        if (isRolling) return;
+        OnRollStart?.Invoke();
         Vector3 worldPosition = drop_point.transform.position;
         transform.position = worldPosition;
         transform.rotation = Random.rotation;
@@ -63,8 +58,6 @@ public class DiceRoller : MonoBehaviour
     private IEnumerator CheckResultWhenStopped()
     {
         isRolling = true;
-        cameraOne.SetActive(!cameraOne.activeSelf);
-        cameraTwo.SetActive(!cameraTwo.activeSelf);
         if (resultText != null) resultText.text = "Rolling...";
 
         yield return new WaitForSeconds(0.2f);
@@ -76,19 +69,9 @@ public class DiceRoller : MonoBehaviour
 
         int rolledNumber = GetTopFaceNumber();
         if (resultText != null)
-            resultText.text = $"P{currentPlayerIndex + 1} Rolled: {rolledNumber}";
+            resultText.text = $"Rolled: {rolledNumber}";
 
-        // Move the active player
-        if (players[currentPlayerIndex] != null)
-        {
-            players[currentPlayerIndex].MoveSteps(rolledNumber);
-        }
-
-        // Pass turn to the next player
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
-        yield return new WaitForSeconds(1f);
-        cameraOne.SetActive(!cameraOne.activeSelf);
-        cameraTwo.SetActive(!cameraTwo.activeSelf);
+        OnDiceLanded?.Invoke(rolledNumber);
         isRolling = false;
     }
 
