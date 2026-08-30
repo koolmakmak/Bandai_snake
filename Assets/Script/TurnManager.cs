@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
-using Unity.Cinemachine;
 
 public class TurnManager : MonoBehaviour
 {
@@ -146,9 +148,18 @@ public class TurnManager : MonoBehaviour
     }
 
 
-    private void HandleWin()
+    private void HandleWin(string name)
     {
         win.enabled = true;
+        TextMeshProUGUI myText = win.GetComponentInChildren<TextMeshProUGUI>();
+        if (myText != null)
+        {
+            myText.text = name + " WIN";
+        }
+        else
+        {
+            Debug.Log("cant find tezt");
+        }
     }
     private void HandleMovementComplete()
     {

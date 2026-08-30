@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Events")]
     public UnityEvent OnMovementComplete;
-    public UnityEvent OnWin;
+    public UnityEvent<string> OnWin;
 
     private bool isMoving = false;
     private Animator anim; // 1. Animator reference
@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour
         isMoving = false;
         if (currentTileIndex==54)
         {
-            OnWin.Invoke();
+            OnWin.Invoke(name);
         }
 
         OnMovementComplete.Invoke();
