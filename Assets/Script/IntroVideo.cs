@@ -6,6 +6,7 @@ public class IntroVideo : MonoBehaviour
 {
     [Header("Video Intro")]
     public VideoClip videoClip;
+    [Range(0f, 1f)] public float videoVolume = 1f;
 
     [Header("Game Music")]
     public AudioClip musicClip;
@@ -13,6 +14,7 @@ public class IntroVideo : MonoBehaviour
 
     VideoPlayer videoPlayer;
     AudioSource musicSource;
+    AudioSource videoAudioSource;
     GameObject introCanvas;
 
     void Start()
@@ -47,9 +49,12 @@ public class IntroVideo : MonoBehaviour
 
     void Update()
     {
-        // Apply the inspector slider live during play.
+        // Apply the inspector sliders live during play.
         if (musicSource != null && !Mathf.Approximately(musicSource.volume, musicVolume))
             musicSource.volume = musicVolume;
+
+        if (videoAudioSource != null && !Mathf.Approximately(videoAudioSource.volume, videoVolume))
+            videoAudioSource.volume = videoVolume;
     }
 
     void BuildIntroUI()
@@ -64,6 +69,14 @@ public class IntroVideo : MonoBehaviour
         videoPlayer.aspectRatio = VideoAspectRatio.Stretch;
         videoPlayer.isLooping = false;
         videoPlayer.loopPointReached += OnVideoEnd;
+
+        // Dedicated audio source for the video, so its volume is separate from the music.
+        videoAudioSource = gameObject.AddComponent<AudioSource>();
+        videoAudioSource.playOnAwake = false;
+        videoAudioSource.loop = false;
+        videoAudioSource.volume = videoVolume;
+        videoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
+        videoPlayer.SetTargetAudioSource(0, videoAudioSource);
 
         // Canvas on top of the game UI
         GameObject canvasGO = new GameObject("IntroCanvas");
