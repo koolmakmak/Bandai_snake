@@ -19,6 +19,7 @@ public class TurnManager : MonoBehaviour
     public DiceRoller diceRoller;
     public List<PlayerController> players = new List<PlayerController>();
     public Button rollButton;
+    public Canvas win;
 
     [Header("Settings")]
     public float diceResultDelay = 2f;
@@ -41,6 +42,8 @@ public class TurnManager : MonoBehaviour
 
     private void Start()
     {
+
+        win.enabled = false;
         if (diceTarget == null && diceRoller != null && diceRoller.drop_point != null)
             diceTarget = diceRoller.drop_point.transform;
 
@@ -70,6 +73,8 @@ public class TurnManager : MonoBehaviour
             diceRoller.OnDiceLanded += HandleDiceLanded;
         }
     }
+
+
 
     private void OnDisable()
     {
@@ -136,11 +141,19 @@ public class TurnManager : MonoBehaviour
         }
 
         player.OnMovementComplete.AddListener(HandleMovementComplete);
+        player.OnWin.AddListener(HandleWin);
         player.MoveSteps(steps);
     }
 
+
+    private void HandleWin()
+    {
+        win.enabled = true;
+    }
     private void HandleMovementComplete()
     {
+
+
         if (players.Count > 0)
         {
             PlayerController player = players[currentPlayerIndex];

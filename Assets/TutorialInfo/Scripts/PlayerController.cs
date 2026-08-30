@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
     [Header("อ้างอิงกระดาน")]
     public board boardManager;
 
+    public event System.Action<int> Win;
+
     [Header("ตั้งค่าการเคลื่อนที่")]
     public float moveSpeed = 5f;
     public float rotationSpeed = 15f;
@@ -17,6 +19,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Events")]
     public UnityEvent OnMovementComplete;
+    public UnityEvent OnWin;
 
     private bool isMoving = false;
     private Animator anim; // 1. Animator reference
@@ -88,6 +91,10 @@ public class PlayerController : MonoBehaviour
 
         CheckTeleport();
         isMoving = false;
+        if (currentTileIndex==54)
+        {
+            OnWin.Invoke();
+        }
 
         OnMovementComplete.Invoke();
     }
