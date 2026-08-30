@@ -202,7 +202,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 788711671}
+      - m_Target: {fileID: 788711673}
         m_TargetAssemblyTypeName: StartMenu, Assembly-CSharp
         m_MethodName: Exit
         m_Mode: 1
@@ -472,7 +472,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 788711671}
+      - m_Target: {fileID: 788711673}
         m_TargetAssemblyTypeName: StartMenu, Assembly-CSharp
         m_MethodName: ToggleHowToPlay
         m_Mode: 1
@@ -558,7 +558,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1, y: -189}
+  m_AnchoredPosition: {x: 1, y: -229}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &353066070
@@ -605,7 +605,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 788711671}
+      - m_Target: {fileID: 788711673}
         m_TargetAssemblyTypeName: StartMenu, Assembly-CSharp
         m_MethodName: CloseHowToPlay
         m_Mode: 1
@@ -875,7 +875,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 788711671}
+      - m_Target: {fileID: 788711673}
         m_TargetAssemblyTypeName: StartMenu, Assembly-CSharp
         m_MethodName: Play
         m_Mode: 1
@@ -934,7 +934,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 788711672}
-  - component: {fileID: 788711671}
+  - component: {fileID: 788711673}
   m_Layer: 0
   m_Name: MenuManager
   m_TagString: Untagged
@@ -942,19 +942,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &788711671
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 788711670}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a478933be8466ab418f8738edcfadcff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StartMenu
-  howToPlayPanel: {fileID: 1533053072}
 --- !u!4 &788711672
 Transform:
   m_ObjectHideFlags: 0
@@ -970,6 +957,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &788711673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 788711670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93857c9095e557246a2ab17e63cbb05d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  howToPlayPanel: {fileID: 1533053072}
 --- !u!1 &847580216
 GameObject:
   m_ObjectHideFlags: 0
@@ -1851,7 +1851,7 @@ RectTransform:
   m_GameObject: {fileID: 2048681481}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10.599424, y: 5.493067, z: 1.198}
+  m_LocalScale: {x: 9.774895, y: 5.065761, z: 1.1048075}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1533053076}
