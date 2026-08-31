@@ -77,7 +77,7 @@ public class StartMenu : MonoBehaviour
         exitVideoPlayer.clip = exitCutsceneClip;
         exitVideoPlayer.renderMode = VideoRenderMode.RenderTexture;
         exitVideoPlayer.targetTexture = new RenderTexture(1920, 1080, 0);
-        exitVideoPlayer.aspectRatio = VideoAspectRatio.Stretch;
+        exitVideoPlayer.aspectRatio = VideoAspectRatio.FitInside;
         exitVideoPlayer.isLooping = false;
         exitVideoPlayer.loopPointReached += OnExitCutsceneEnd;
         exitVideoPlayer.prepareCompleted += OnExitCutscenePrepared;

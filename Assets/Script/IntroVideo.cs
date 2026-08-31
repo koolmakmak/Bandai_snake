@@ -66,7 +66,7 @@ public class IntroVideo : MonoBehaviour
         videoPlayer.clip = videoClip;
         videoPlayer.renderMode = VideoRenderMode.RenderTexture;
         videoPlayer.targetTexture = new RenderTexture(1920, 1080, 0);
-        videoPlayer.aspectRatio = VideoAspectRatio.Stretch;
+        videoPlayer.aspectRatio = VideoAspectRatio.FitInside;
         videoPlayer.isLooping = false;
         videoPlayer.loopPointReached += OnVideoEnd;
 
