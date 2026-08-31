@@ -970,6 +970,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   howToPlayPanel: {fileID: 1533053072}
+  exitCutsceneClip: {fileID: 32900000, guid: daaa78a2fbb2d074ea840210e227d8f8, type: 3}
+  muteExitCutsceneAudio: 0
+  exitCutsceneVolume: 1
 --- !u!1 &847580216
 GameObject:
   m_ObjectHideFlags: 0
@@ -1110,7 +1113,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.6394043, y: 0.657}
-  m_AnchoredPosition: {x: -61, y: -44.0001}
+  m_AnchoredPosition: {x: -61, y: -36}
   m_SizeDelta: {x: -22, y: 14}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &854099228
@@ -1851,7 +1854,7 @@ RectTransform:
   m_GameObject: {fileID: 2048681481}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 9.083712, y: 4.707561, z: 1.0266865}
+  m_LocalScale: {x: 7.7347803, y: 4.008488, z: 0.8742236}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1533053076}
