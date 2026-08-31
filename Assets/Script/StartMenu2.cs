@@ -10,10 +10,10 @@ public class StartMenu : MonoBehaviour
 
     [Header("Exit Cutscene")]
     public VideoClip exitCutsceneClip;
-    public bool muteExitCutsceneAudio = false;
     [Range(0f, 1f)] public float exitCutsceneVolume = 1f;
 
     VideoPlayer exitVideoPlayer;
+    AudioSource exitVideoAudio;
     GameObject exitCutsceneCanvas;
     bool exitCutscenePlayed = false;
 
@@ -82,10 +82,13 @@ public class StartMenu : MonoBehaviour
         exitVideoPlayer.loopPointReached += OnExitCutsceneEnd;
         exitVideoPlayer.prepareCompleted += OnExitCutscenePrepared;
 
-        // Direct audio; mute only if the file's audio sample rate doesn't match Unity.
-        exitVideoPlayer.audioOutputMode = VideoAudioOutputMode.Direct;
-        exitVideoPlayer.SetDirectAudioVolume(0, exitCutsceneVolume);
-        exitVideoPlayer.SetDirectAudioMute(0, muteExitCutsceneAudio);
+        // Dedicated audio source for the video, same as the intro video.
+        exitVideoAudio = gameObject.AddComponent<AudioSource>();
+        exitVideoAudio.playOnAwake = false;
+        exitVideoAudio.loop = false;
+        exitVideoAudio.volume = exitCutsceneVolume;
+        exitVideoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
+        exitVideoPlayer.SetTargetAudioSource(0, exitVideoAudio);
 
         // Fullscreen overlay canvas
         GameObject canvasGO = new GameObject("ExitCutsceneCanvas");
