@@ -1042,8 +1042,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   howToPlayPanel: {fileID: 1533053072}
-  exitCutsceneClip: {fileID: 32900000, guid: c380243ebcd9b3b46ac6fe26e8c07a52, type: 3}
-  exitCutsceneAudio: {fileID: 8300000, guid: e9f52a4135f9a304da5405a52be8cd1e, type: 3}
+  exitCutsceneClip: {fileID: 32900000, guid: cd1a1b3f7c6d21745851826108313f7c, type: 3}
 --- !u!1 &847580216
 GameObject:
   m_ObjectHideFlags: 0

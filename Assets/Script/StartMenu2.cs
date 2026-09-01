@@ -10,13 +10,13 @@ public class StartMenu : MonoBehaviour
 
     [Header("Exit Cutscene")]
     public VideoClip exitCutsceneClip;
-    public AudioClip exitCutsceneAudio; // optional separate audio for the cutscene
 
     VideoPlayer exitVideoPlayer;
     AudioSource exitAudioSource;
     GameObject exitCutsceneCanvas;
     bool exitCutscenePlayed = false;
     bool cutscenePlaying = false;
+    bool exitCutsceneClosing = false;
 
     void Start()
     {
@@ -46,6 +46,9 @@ public class StartMenu : MonoBehaviour
     {
         // First click: play the goodbye cutscene, then return to menu.
         // Second click: actually quit.
+        if (cutscenePlaying || exitCutsceneClosing)
+            return;
+
         if (!exitCutscenePlayed)
         {
             exitCutscenePlayed = true;
@@ -65,30 +68,47 @@ public class StartMenu : MonoBehaviour
             return;
         }
 
+        if (cutscenePlaying || exitCutsceneClosing)
+            return;
+
         BuildExitCutsceneUI();
-        StartCoroutine(PlayExitCutsceneRoutine());
+        exitVideoPlayer.prepareCompleted += OnExitVideoPrepared;
+        exitVideoPlayer.Prepare();
     }
 
-    System.Collections.IEnumerator PlayExitCutsceneRoutine()
+    void OnExitVideoPrepared(VideoPlayer vp)
     {
-        exitVideoPlayer.Prepare();
-
-        float timeout = 5f;
-        while (!exitVideoPlayer.isPrepared && timeout > 0f)
-        {
-            timeout -= Time.deltaTime;
-            yield return null;
-        }
+        if (exitCutsceneClosing || vp == null)
+            return;
 
         cutscenePlaying = true;
-        exitVideoPlayer.Play();
-
-        if (exitAudioSource != null && exitCutsceneAudio != null)
-            exitAudioSource.Play();
+        vp.Play();
     }
 
     void BuildExitCutsceneUI()
     {
+        if (exitVideoPlayer != null)
+        {
+            exitVideoPlayer.prepareCompleted -= OnExitVideoPrepared;
+            exitVideoPlayer.loopPointReached -= OnExitCutsceneEnd;
+            exitVideoPlayer.Stop();
+            Destroy(exitVideoPlayer);
+            exitVideoPlayer = null;
+        }
+
+        if (exitAudioSource != null)
+        {
+            exitAudioSource.Stop();
+            Destroy(exitAudioSource);
+            exitAudioSource = null;
+        }
+
+        if (exitCutsceneCanvas != null)
+        {
+            Destroy(exitCutsceneCanvas);
+            exitCutsceneCanvas = null;
+        }
+
         // Video player
         exitVideoPlayer = gameObject.AddComponent<VideoPlayer>();
         exitVideoPlayer.playOnAwake = false;
@@ -98,18 +118,19 @@ public class StartMenu : MonoBehaviour
         exitVideoPlayer.targetTexture = new RenderTexture(1920, 1080, 0);
         exitVideoPlayer.aspectRatio = VideoAspectRatio.FitInside;
         exitVideoPlayer.isLooping = false;
+        exitVideoPlayer.waitForFirstFrame = true;
+        exitVideoPlayer.skipOnDrop = true;
         exitVideoPlayer.loopPointReached += OnExitCutsceneEnd;
 
-        // Mute the video's own audio to avoid AudioSampleProvider buffer overflow.
-        exitVideoPlayer.audioOutputMode = VideoAudioOutputMode.Direct;
-        exitVideoPlayer.SetDirectAudioMute(0, true);
+        // Play the video's own audio track through the AudioSource.
+        exitVideoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
 
-        // Separate audio source for the cutscene sound.
+        // Audio source for the video's own sound.
         exitAudioSource = gameObject.AddComponent<AudioSource>();
         exitAudioSource.playOnAwake = false;
         exitAudioSource.loop = false;
-        exitAudioSource.clip = exitCutsceneAudio;
         exitAudioSource.volume = 1f;
+        exitVideoPlayer.SetTargetAudioSource(0, exitAudioSource);
 
         // Fullscreen overlay canvas
         GameObject canvasGO = new GameObject("ExitCutsceneCanvas");
@@ -152,42 +173,42 @@ public class StartMenu : MonoBehaviour
         CloseExitCutscene();
     }
 
-    void Update()
-    {
-        // Fallback: close the cutscene when the video ends, even if loopPointReached never fires.
-        if (!cutscenePlaying || exitVideoPlayer == null || exitVideoPlayer.frame <= 0)
-            return;
-
-        bool ended = !exitVideoPlayer.isPlaying;
-        if (!ended && exitVideoPlayer.frameCount > 0)
-            ended = exitVideoPlayer.frame >= (long)exitVideoPlayer.frameCount - 1;
-
-        if (ended)
-            CloseExitCutscene();
-    }
-
     void CloseExitCutscene()
     {
+        if (exitCutsceneClosing)
+            return;
+
+        exitCutsceneClosing = true;
         cutscenePlaying = false;
 
         if (exitVideoPlayer != null)
         {
+            exitVideoPlayer.prepareCompleted -= OnExitVideoPrepared;
+            exitVideoPlayer.loopPointReached -= OnExitCutsceneEnd;
             exitVideoPlayer.Stop();
             if (exitVideoPlayer.targetTexture != null)
             {
                 exitVideoPlayer.targetTexture.Release();
                 exitVideoPlayer.targetTexture = null;
             }
+            Destroy(exitVideoPlayer);
+            exitVideoPlayer = null;
         }
 
         if (exitAudioSource != null)
+        {
             exitAudioSource.Stop();
+            Destroy(exitAudioSource);
+            exitAudioSource = null;
+        }
 
         if (exitCutsceneCanvas != null)
         {
             Destroy(exitCutsceneCanvas);
             exitCutsceneCanvas = null;
         }
+
+        exitCutsceneClosing = false;
     }
 
     void QuitGame()
