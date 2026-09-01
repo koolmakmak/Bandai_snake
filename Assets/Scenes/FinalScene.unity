@@ -27234,7 +27234,7 @@ MonoBehaviour:
   rb: {fileID: 1032137162}
   resultText: {fileID: 0}
   drop_point: {fileID: 535362297}
-  throwForce: 89
+  throwForce: 100
   maxTorque: 100
   dropForce: 100
   maxSpinSpeed: 100
@@ -27246,7 +27246,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1032137160}
   serializedVersion: 5
-  m_Mass: 0.35
+  m_Mass: 0.3
   m_LinearDamping: 0.5
   m_AngularDamping: 0.0001
   m_CenterOfMass: {x: 0, y: 0, z: 0}

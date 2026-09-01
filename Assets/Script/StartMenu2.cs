@@ -10,7 +10,6 @@ public class StartMenu : MonoBehaviour
 
     [Header("Exit Cutscene")]
     public VideoClip exitCutsceneClip;
-    public AudioClip exitCutsceneAudio; // optional separate audio for the cutscene
 
     VideoPlayer exitVideoPlayer;
     AudioSource exitAudioSource;
@@ -84,9 +83,6 @@ public class StartMenu : MonoBehaviour
 
         cutscenePlaying = true;
         vp.Play();
-
-        if (exitAudioSource != null && exitCutsceneAudio != null)
-            exitAudioSource.Play();
     }
 
     void BuildExitCutsceneUI()
@@ -126,15 +122,15 @@ public class StartMenu : MonoBehaviour
         exitVideoPlayer.skipOnDrop = true;
         exitVideoPlayer.loopPointReached += OnExitCutsceneEnd;
 
-        // Route audio through the external AudioSource; Direct mode caused AudioSampleProvider overflow.
-        exitVideoPlayer.audioOutputMode = VideoAudioOutputMode.None;
+        // Play the video's own audio track through the AudioSource.
+        exitVideoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
 
-        // Separate audio source for the cutscene sound.
+        // Audio source for the video's own sound.
         exitAudioSource = gameObject.AddComponent<AudioSource>();
         exitAudioSource.playOnAwake = false;
         exitAudioSource.loop = false;
-        exitAudioSource.clip = exitCutsceneAudio;
         exitAudioSource.volume = 1f;
+        exitVideoPlayer.SetTargetAudioSource(0, exitAudioSource);
 
         // Fullscreen overlay canvas
         GameObject canvasGO = new GameObject("ExitCutsceneCanvas");
