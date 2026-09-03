@@ -8,11 +8,16 @@ public class StartMenu : MonoBehaviour
     [Header("How to Play panel")]
     public GameObject howToPlayPanel;
 
+    [Header("Start Menu Music")]
+    public AudioClip startMenuMusic;
+    [Range(0f, 1f)] public float musicVolume = 0.5f;
+
     [Header("Exit Cutscene")]
     public VideoClip exitCutsceneClip;
 
     VideoPlayer exitVideoPlayer;
     AudioSource exitAudioSource;
+    AudioSource musicSource;
     GameObject exitCutsceneCanvas;
     bool exitCutscenePlayed = false;
     bool cutscenePlaying = false;
@@ -23,6 +28,15 @@ public class StartMenu : MonoBehaviour
         // Hide the How to Play canvas by default.
         if (howToPlayPanel != null)
             howToPlayPanel.SetActive(false);
+
+        musicSource = gameObject.AddComponent<AudioSource>();
+        musicSource.playOnAwake = false;
+        musicSource.loop = true;
+        musicSource.clip = startMenuMusic;
+        musicSource.volume = musicVolume;
+
+        if (startMenuMusic != null)
+            musicSource.Play();
     }
 
     public void Play()
@@ -72,6 +86,8 @@ public class StartMenu : MonoBehaviour
             return;
 
         BuildExitCutsceneUI();
+        if (musicSource != null)
+            musicSource.Stop();
         exitVideoPlayer.prepareCompleted += OnExitVideoPrepared;
         exitVideoPlayer.Prepare();
     }
@@ -207,6 +223,9 @@ public class StartMenu : MonoBehaviour
             Destroy(exitCutsceneCanvas);
             exitCutsceneCanvas = null;
         }
+
+        if (musicSource != null && startMenuMusic != null)
+            musicSource.Play();
 
         exitCutsceneClosing = false;
     }

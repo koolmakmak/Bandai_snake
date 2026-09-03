@@ -22385,9 +22385,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IntroVideo
   videoClip: {fileID: 32900000, guid: cdabbdacfe4b1ce40ae4f66d3c1ee3a3, type: 3}
-  videoVolume: 1
+  videoVolume: 0.839
   musicClip: {fileID: 8300000, guid: beeee6b732b89f647a1fe9954a9e5bc8, type: 3}
-  musicVolume: 0.142
+  musicVolume: 0.112
 --- !u!4 &816452631
 Transform:
   m_ObjectHideFlags: 0

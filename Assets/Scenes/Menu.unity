@@ -1042,6 +1042,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   howToPlayPanel: {fileID: 1533053072}
+  startMenuMusic: {fileID: 8300000, guid: 7ee7e934dff010349a236ce3c5666985, type: 3}
+  musicVolume: 0.714
   exitCutsceneClip: {fileID: 32900000, guid: cd1a1b3f7c6d21745851826108313f7c, type: 3}
 --- !u!1 &847580216
 GameObject:
